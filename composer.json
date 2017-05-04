@@ -1,0 +1,14 @@
+{
+    "name": "walshcj/uciseventeen",
+    "description": "UC Irvine Wordpress News theme for 2017",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Christopher Walsh",
+            "email": "walshcj@uci.edu"
+        }
+    ],
+    "require": {},
+    "repositories": []
+}

@@ -1,0 +1,72 @@
+/*
+Theme Name: UCI Seventeen
+Theme URI: https://uci.edu
+Author: Christopher Walsh, UC Irvine
+Author URI: https://uci.edu
+Description:
+Version: 0.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: uciseventeen
+Tags: one-column, two-columns, right-sidebar, flexible-header, accessibility-ready, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+/* Make sure embeds and iframes fit their containers. */
+
+embed,
+iframe,
+object {
+    margin-bottom: 1.5em;
+    max-width: 100%;
+}
+
+.wp-caption,
+.gallery-caption {
+    color: #666;
+    font-size: 13px;
+    /*font-size: 0.8125rem;*/
+    font-style: italic;
+    margin-bottom: 1.5em;
+    max-width: 100%;
+}
+
+.wp-caption img[class*="wp-image-"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-caption .wp-caption-text {
+    margin: 0.8075em 0;
+}
+
+.aligncenter, div.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alignleft {
+    float: left;
+}
+
+.alignright {
+    float: right;
+}
+
+.post-container .page-heading a, .search-heading a {
+    text-decoration: none;
+}
+
+.post-container, .pb-container {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.post-container:first-child, pb-container:first-child {
+    padding-top: 0px;
+}
