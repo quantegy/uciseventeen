@@ -30,6 +30,19 @@
         </div>
     </div>
 <?php else: ?>
-
+    <div class="row search-heading">
+        <div class="col-xs-12">
+            <h2 class="text-left">
+                <a href="<?php the_permalink(); ?>"><span><?php the_title(); ?></span></a>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget col-xs-12 col-md-12">
+            <div class="widget-bucket clearfix">
+                <p class="lead"><?php the_excerpt(); ?></p>
+            </div>
+        </div>
+    </div>
 <?php endif; ?>
 

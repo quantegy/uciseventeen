@@ -17,10 +17,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta name="description>" content="">
 
     <link rel="icon" type="image/x-icon" href="//web.communications.uci.edu/assets/2015/img/favicon.ico">
-    <link rel="icon" type="apple-touch-icon" href="//web.communications.uci.edu/assets/2015/img/webclip-icon.png">
+    <link rel="apple-touch-icon" href="//web.communications.uci.edu/assets/2015/img/webclip-icon.png">
 
     <?php wp_head(); ?>
 </head>
