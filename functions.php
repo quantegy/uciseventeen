@@ -9,15 +9,9 @@
  * @since 0.1
  */
 
-ini_set('display_errors', 1);
+ini_set('display_errors', false);
 
 @define('UCI_SEVENTEEN_VERSION', '0.1');
-
-@define('UCI_SEVENTEEN_WORDMARK_SETTING', 'wordmark_image');
-
-@define('UCI_SEVENTEEN_SEARCH_FORM_SETTING', 'search_form');
-@define('UCI_SEVENTEEN_SERACH_FORM_UCI', 'uci');
-@define('UCI_SEVENTEEN_SEARCH_FORM_WP', 'wp');
 
 /**
  * register custom uci-bootstrap nav walker for main menu
@@ -25,19 +19,72 @@ ini_set('display_errors', 1);
 require_once 'wp-uci-bootstrap-navwalker.php';
 
 /**
+ * register custom bootstrap comments walker
+ */
+require_once 'wp-uci-comments-walker.php';
+
+/**
  * Bootstrap pagination output
  */
 
 
 /**
- *
+ * include our custom sitorigin pagebuilder widgets
+ * if the plugin is available
  */
-require_once 'widgets/parallax-headline.php';
+include_once ABSPATH . 'wp-admin/includes/plugin.php';
+if (is_plugin_active('so-widgets-bundle/so-widgets-bundle.php')) {
+    require_once 'widgets/parallax-headline.php';
+}
+
+/**
+ * let user know that there is a pagebuilder dependency (optional)
+ */
+function uciseventeen_so_notices()
+{
+    if (!is_plugin_active('so-widgets-bundle/so-widgets-bundle.php') ||
+        !is_plugin_active_for_network('so-widgets-bundle/so-widgets-bundle.php')
+    ) {
+        ?>
+        <div class="update-nag notice">
+            <p>
+                <?php _e('Please, install SiteOrigin Widgets Bundle!', 'uciseventeen'); ?>
+                <a href="https://siteorigin.com/widgets-bundle/">Available here.</a>
+            </p>
+        </div>
+        <?php
+    }
+
+    if (!is_plugin_active('siteorigin-panels/siteorigin-panels.php') ||
+        !is_plugin_active_for_network('siteorigin-panels/siteorigin-panels.php')
+    ) {
+        ?>
+        <div class="error notice">
+            <p>
+                <?php _e('SiteOrigin Page Builder is a preferred plugin. Install it!'); ?>
+                <a href="https://siteorigin.com/page-builder/">Available here.</a>
+            </p>
+        </div>
+        <?php
+    }
+}
+
+add_action('admin_notices', 'uciseventeen_so_notices');
+
 
 /**
  * require custom widget output classes
  */
 require_once 'widgets/uci-wp-recent-posts.php';
+require_once 'widgets/uci-wp-recent-comments.php';
+require_once 'widgets/uci-wp-archives.php';
+require_once 'widgets/uci-wp-meta.php';
+require_once 'widgets/uci-wp-categories.php';
+
+/**
+ * category walker for list items
+ */
+require_once 'wp-uci-category-walker.php';
 
 function uciseventeen_setup()
 {
@@ -126,7 +173,7 @@ function uciseventeen_widgets_init()
     register_nav_menu('footer-2', __('Footer column two', 'uciseventeen'));
     register_nav_menu('footer-3', __('Footer column three', 'uciseventeen'));
 
-    register_sidebar(array(
+    /*register_sidebar(array(
         'name' => __('Footer Column 4', 'uciseventeen'),
         'id' => 'footer-4',
         'description' => 'Footer fourth column for additional content',
@@ -134,7 +181,7 @@ function uciseventeen_widgets_init()
         'after_widget' => '',
         'before_title' => '<span class="sr-only">',
         'after_title' => '</span>'
-    ));
+    ));*/
 }
 
 add_action('widgets_init', 'uciseventeen_widgets_init');
@@ -146,8 +193,8 @@ add_action('widgets_init', 'uciseventeen_widgets_init');
  */
 function uciseventeen_filter_plugin_updates($value)
 {
-    unset($value->response['siteorigin-panels/siteorigin-panels.php']);
-    unset($value->response['so-widgets-bundle/so-widgets-bundle.php']);
+    //unset($value->response['siteorigin-panels/siteorigin-panels.php']);
+    //unset($value->response['so-widgets-bundle/so-widgets-bundle.php']);
 
     return $value;
 }
@@ -156,45 +203,9 @@ add_filter('site_transient_update_plugins', 'uciseventeen_filter_plugin_updates'
 
 function uciseventeen_customize_register($wp_customize)
 {
-    $wp_customize->add_section('uciseventeen_settings', array(
-        'title' => __('UCI Settings', 'uciseventeen'),
-        'priority' => 100,
-        'capability' => 'edit_theme_options',
-        'description' => __('Change options here.', 'uciseventeen')
-    ));
+    require_once 'wp-uci-settings.php';
 
-    /**
-     * Give user the ability to uplaod a branding logo
-     */
-    $wp_customize->add_setting(UCI_SEVENTEEN_WORDMARK_SETTING, array(
-        'default' => '',
-        'transport' => 'postMessage'
-    ));
-
-    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, UCI_SEVENTEEN_WORDMARK_SETTING, array(
-        'label' => __('Wordmark image', 'uciseventeen'),
-        'section' => 'uciseventeen_settings',
-        'mime_type' => 'image'
-    )));
-
-    /**
-     * Switch between site search and UCI search
-     */
-    $wp_customize->add_setting(UCI_SEVENTEEN_SEARCH_FORM_SETTING, array(
-        'default' => UCI_SEVENTEEN_SERACH_FORM_UCI,
-        'transport' => 'postMessage'
-    ));
-
-    $wp_customize->add_control(new WP_Customize_Control($wp_customize, UCI_SEVENTEEN_SEARCH_FORM_SETTING, array(
-        'label' => __('Search Type'),
-        'section' => 'uciseventeen_settings',
-        'settings' => UCI_SEVENTEEN_SEARCH_FORM_SETTING,
-        'type' => 'select',
-        'choices' => array(
-            UCI_SEVENTEEN_SERACH_FORM_UCI => __('UCI', 'uciseventeen'),
-            UCI_SEVENTEEN_SEARCH_FORM_WP => __('Wordpress', 'uciseventeen')
-        )
-    )));
+    $settings = new \UCI\Wordpress\Customize\Settings($wp_customize);
 }
 
 add_action('customize_register', 'uciseventeen_customize_register');
@@ -216,14 +227,18 @@ function uciseventeen_home_url($return = false)
 
 function uciseventeen_wordmark($return = false)
 {
-    $mediaId = get_theme_mod(UCI_SEVENTEEN_WORDMARK_SETTING, '');
+    require_once 'wp-uci-settings.php';
+
+    $mediaId = get_theme_mod(\UCI\Wordpress\Customize\Settings::WORDMARK_SETTING, '');
 
     $html = '<a href="' . uciseventeen_home_url(true) . '">';
 
     if (empty($mediaId)) {
         $html .= '<img src="' . get_stylesheet_directory_uri() . '/assets/images/uci-wordmark.png" alt="' . get_bloginfo('name') . '">';
     } else {
-        $html .= wp_get_attachment_image($mediaId, 'full');
+        $html .= wp_get_attachment_image($mediaId, 'full', false, array(
+            'alt' => get_bloginfo('name')
+        ));
     }
 
     $html .= '</a>';
@@ -235,11 +250,35 @@ function uciseventeen_wordmark($return = false)
     echo $html;
 }
 
+function uciseventeen_get_siteowner() {
+    require_once 'wp-uci-settings.php';
+
+    $siteOwner = array(
+        'site_owner' => get_theme_mod(\UCI\Wordpress\Customize\Settings::SITE_OWNER_SETTING),
+        'site_owner_address_one' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_ONE_SETTING),
+        'site_owner_address_two' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_TWO_SETTING),
+        'site_owner_address_three' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_THREE_SETTING),
+        'site_owner_phone' => get_theme_mod(\UCI\Wordpress\Customize\Settings::PHONE_SETTING),
+        'site_owner_email' => get_theme_mod(\UCI\Wordpress\Customize\Settings::EMAIL_SETTING)
+    );
+
+    $html = '';
+    foreach($siteOwner as $key => $item) {
+        if(!empty($item)) {
+            $html .= '<span>' . $item . "</span><br>";
+        }
+    }
+
+    echo $html;
+}
+
 function uciseventeen_get_search_form($form)
 {
-    $type = get_theme_mod(UCI_SEVENTEEN_SEARCH_FORM_SETTING, 'uci');
+    require_once 'wp-uci-settings.php';
 
-    if($type === UCI_SEVENTEEN_SERACH_FORM_UCI) {
+    $type = get_theme_mod(\UCI\Wordpress\Customize\Settings::SEARCH_FORM_SETTING, 'uci');
+
+    if ($type === \UCI\Wordpress\Customize\Settings::SEARCH_FORM_UCI) {
         $form = template(get_stylesheet_directory() . '/templates/form/uci.php');
     } else {
         $form = template(get_stylesheet_directory() . '/templates/form/wp.php');
@@ -318,20 +357,24 @@ function uciseventeen_get_the_archive_title($title)
 
 add_filter('get_the_archive_title', 'uciseventeen_get_the_archive_title');
 
-function uciseventeen_post_thumbnail_html($html, $post_id, $post_thumbnail_id, $size, $attr) {
+function uciseventeen_post_thumbnail_html($html, $post_id, $post_thumbnail_id, $size, $attr)
+{
     $src = wp_get_attachment_image_src($post_thumbnail_id, $size);
     $alt = get_the_title($post_id);
     $class = 'img-responsive';
 
     return '<img src="' . $src[0] . '" alt="' . $alt . '" class="' . $class . '">';
 }
+
 add_filter('post_thumbnail_html', 'uciseventeen_post_thumbnail_html', 10, 5);
 
-function uciseventeen_get_image_tag_class($class) {
+function uciseventeen_get_image_tag_class($class)
+{
     $class .= ' img-responsive';
 
     return $class;
 }
+
 add_filter('get_image_tag_class', 'uciseventeen_get_image_tag_class', 0, 1);
 
 /*function uciseventeen_bootstrap_responsive_images($html) {
@@ -368,7 +411,7 @@ function uciseventeen_get_the_excerpt($output)
         $html .= get_post()->post_excerpt;
     }
 
-    if(!is_single()) {
+    if (!is_single() && !is_page()) {
         $html .= ' <a href="' . get_the_permalink() . '">Read more</a>';
     }
 
@@ -426,21 +469,22 @@ function wp_bootstrap_pagination($pages = '', $range = 4)
  * @uses   get_intermediate_image_sizes()
  * @return array $sizes Data for all currently-registered image sizes.
  */
-function get_image_sizes() {
+function get_image_sizes()
+{
     global $_wp_additional_image_sizes;
 
     $sizes = array();
 
-    foreach ( get_intermediate_image_sizes() as $_size ) {
-        if ( in_array( $_size, array('thumbnail', 'medium', 'medium_large', 'large') ) ) {
-            $sizes[ $_size ]['width']  = get_option( "{$_size}_size_w" );
-            $sizes[ $_size ]['height'] = get_option( "{$_size}_size_h" );
-            $sizes[ $_size ]['crop']   = (bool) get_option( "{$_size}_crop" );
-        } elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
-            $sizes[ $_size ] = array(
-                'width'  => $_wp_additional_image_sizes[ $_size ]['width'],
-                'height' => $_wp_additional_image_sizes[ $_size ]['height'],
-                'crop'   => $_wp_additional_image_sizes[ $_size ]['crop'],
+    foreach (get_intermediate_image_sizes() as $_size) {
+        if (in_array($_size, array('thumbnail', 'medium', 'medium_large', 'large'))) {
+            $sizes[$_size]['width'] = get_option("{$_size}_size_w");
+            $sizes[$_size]['height'] = get_option("{$_size}_size_h");
+            $sizes[$_size]['crop'] = (bool)get_option("{$_size}_crop");
+        } elseif (isset($_wp_additional_image_sizes[$_size])) {
+            $sizes[$_size] = array(
+                'width' => $_wp_additional_image_sizes[$_size]['width'],
+                'height' => $_wp_additional_image_sizes[$_size]['height'],
+                'crop' => $_wp_additional_image_sizes[$_size]['crop'],
             );
         }
     }
@@ -455,11 +499,12 @@ function get_image_sizes() {
  * @param  string $size The image size for which to retrieve data.
  * @return bool|array $size Size data about an image size or false if the size doesn't exist.
  */
-function get_image_size( $size ) {
+function get_image_size($size)
+{
     $sizes = get_image_sizes();
 
-    if ( isset( $sizes[ $size ] ) ) {
-        return $sizes[ $size ];
+    if (isset($sizes[$size])) {
+        return $sizes[$size];
     }
 
     return false;
@@ -472,12 +517,13 @@ function get_image_size( $size ) {
  * @param  string $size The image size for which to retrieve data.
  * @return bool|string $size Width of an image size or false if the size doesn't exist.
  */
-function get_image_width( $size ) {
-    if ( ! $size = get_image_size( $size ) ) {
+function get_image_width($size)
+{
+    if (!$size = get_image_size($size)) {
         return false;
     }
 
-    if ( isset( $size['width'] ) ) {
+    if (isset($size['width'])) {
         return $size['width'];
     }
 
@@ -491,12 +537,13 @@ function get_image_width( $size ) {
  * @param  string $size The image size for which to retrieve data.
  * @return bool|string $size Height of an image size or false if the size doesn't exist.
  */
-function get_image_height( $size ) {
-    if ( ! $size = get_image_size( $size ) ) {
+function get_image_height($size)
+{
+    if (!$size = get_image_size($size)) {
         return false;
     }
 
-    if ( isset( $size['height'] ) ) {
+    if (isset($size['height'])) {
         return $size['height'];
     }
 
@@ -506,12 +553,222 @@ function get_image_height( $size ) {
 /**
  * boostrapify widgets output
  */
-function uciseventeen_recent_posts_widget_registration() {
+function uciseventeen_custom_widget_registration()
+{
+    // recent posts
     unregister_widget('WP_Widget_Recent_Posts');
     register_widget('UCI_Recent_Posts_Widget');
-}
-add_action('widgets_init', 'uciseventeen_recent_posts_widget_registration');
 
+    // recent comments
+    unregister_widget('WP_Widget_Recent_Comments');
+    register_widget('UCI_Recent_Comments_Widget');
+
+    // archives
+    unregister_widget('WP_Widget_Archives');
+    register_widget('UCI_Archives_Widget');
+
+    // meta widget
+    unregister_widget('WP_Widget_Meta');
+    register_widget('UCI_Meta_Widget');
+
+    // categories widget
+    unregister_widget('WP_Widget_Categories');
+    register_widget('UCI_Categories_Widget');
+}
+
+add_action('widgets_init', 'uciseventeen_custom_widget_registration');
+
+function uciseventeen_comments_title($comments_number, $title)
+{
+    if ($comments_number === '1') {
+        printf(_x('One Reply to &ldquo;%s&rdquo;', 'comments_title', 'uciseventeen'), $title);
+    } else {
+        printf(_nx(
+            '%1$s Reply to &ldquo;%2$s&rdquo;',
+            '%1$s Replies to &ldquo;%2$s&rdquo;',
+            $comments_number,
+            'comments_title',
+            'uciseventeen'
+        ), number_format($comments_number), $title);
+    }
+}
+
+/**
+ * enqueue comments reply script
+ */
+function uciseventeen_enqueue_comment_reply_script()
+{
+    if (get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+
+/**
+ * bootstrap support for comments_form output
+ */
+function uciseventeen_comment_form_fields($fields)
+{
+    $author = wp_get_current_commenter();
+
+    $required = get_option('require_name_email');
+    $ariaRequired = ($required ? 'aria-required="true"' : '');
+    $html5 = current_theme_supports('html5', 'comment-form') ? 1 : 0;
+
+    $fields = array(
+        'author' => '<div class="form-group comment-form-author">' .
+            '<label for="author">' . __('Name', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
+            '<input class="form-control" id="author" name="author" type="text" value="' . esc_attr($author['comment_author']) . '" size="30"' . $ariaRequired . '>' .
+            '</div>',
+        'email' => '<div class="fomr-group comment-form-email">' .
+            '<label for="email">' . __('Email', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
+            '<input class="form-control" id="email" name="email" ' . ($html5 ? 'type="email"' : 'type="text"') . ' value="' . esc_attr($author['comment_author_email']) . '" size="30" ' . $ariaRequired . '>' .
+            '</div>',
+        'url' => '<div class="fomr-group comment-form-url">' .
+            '<label for="url">' . __('Website', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
+            '<input class="form-control" id="url" name="url" ' . ($html5 ? 'type="url"' : 'type="text"') . ' value="' . esc_attr($author['comment_author_url']) . '" size="30">' .
+            '</div>'
+    );
+
+    return $fields;
+}
+
+add_filter('comment_form_default_fields', 'uciseventeen_comment_form_fields');
+
+/**
+ * bootstrap support for comments_form textarea output
+ */
+function uciseventeen_comment_form_defaults($args)
+{
+    $args['comment_field'] = '<div class="form-group comment-form-comment">' .
+        '<label for="comment">' . _x('Comment', 'uciseventeen') . '</label>' .
+        '<textarea class="form-control" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>' .
+        '</div>';
+    $args['class_submit'] = 'btn btn-default';
+
+    return $args;
+}
+
+add_filter('comment_form_defaults', 'uciseventeen_comment_form_defaults', 10, 1);
+
+function uciseventeen_bootstrap_comment($comment, $args, $depth)
+{
+    $GLOBALS['comment'] = $comment;
+
+    ?>
+    <?php if ($comment->comment_type === 'pingback' || $comment->comment_type === 'trackback'): ?>
+    <li class="list-group-item" id="comment-<?php comment_ID(); ?>">
+        <p>
+            <?php _e('Pingback', 'uciseventeen'); ?>
+            <?php get_comment_author_link(); ?>
+            <?php edit_comment_link(__('(Edit)', 'uciseventeen'), '', ''); ?>
+        </p>
+    </li>
+<?php else: ?>
+    <?php global $post; ?>
+    <li class="list-group-item" id="li-comment-<?php comment_ID(); ?>">
+
+        <h4 class="list-group-item-heading">
+            <cite>
+                <?php echo get_comment_author_link(); ?>
+                <?php echo ($comment->user_id === $post->post_author) ? '<span>' . __('Post author', 'uciseventeen') . '</span>' : ''; ?>
+            </cite>
+            <a href="<?php echo esc_url(get_comment_link($comment->comment_ID)); ?>">
+                <time datetime="<?php echo get_comment_time('c'); ?>">
+                    <?php echo get_comment_date() ?> at <?php echo get_comment_time(); ?>
+                </time>
+            </a>
+        </h4>
+
+
+        <div class="list-group-item-text">
+            <?php if ($comment->comment_approved == '0'): ?>
+                <div class="alert alert-warning"><?php _e('Your comment is awaiting moderation.', 'uciseventeen'); ?></div>
+            <?php endif; ?>
+            <div>
+                <?php echo comment_text(); ?>
+                <a class="btn btn-default btn-xs"
+                   href="<?php echo get_edit_comment_link($comment); ?>"><?php _e('Edit', 'uciseventeen'); ?></a>
+                <?php comment_reply_link(array_merge($args, array(
+                    'reply_text' => __('Reply', 'uciseventeen') . ' <span class="glyphicon glyphicon-arrow-down"></span>',
+                    'after' => '',
+                    'depth' => $depth,
+                    'max_depth' => $args['max_depth']
+                ))); ?>
+            </div>
+        </div>
+    </li>
+<?php endif; ?>
+    <?php
+}
+
+/**
+ * replace class for comment reply link for bootstrap buttons
+ */
+function uciseventeen_reply_link_class($content)
+{
+    $content = str_replace('comment-reply-link', 'comment-reply-link btn btn-primary btn-xs', $content);
+
+    return $content;
+}
+
+add_filter('comment_reply_link', 'uciseventeen_reply_link_class');
+
+/**
+ * Format archive widget for bootstrap list-group
+ * @param $link_html
+ * @param $url
+ * @param $text
+ * @param $format
+ * @param $before
+ * @param $after
+ * @return string
+ */
+function uciseventeen_get_archives_link($link_html, $url, $text, $format, $before, $after)
+{
+    if ($format === 'bootstrap') {
+        $link_html = "\t" . '<li class="list-group-item">' . $before . '<a href="' . $url . '">' . $text . '</a>' . $after . '</li>' . "\n";
+    }
+
+    return $link_html;
+}
+
+/**
+ * Add a dynamic meta description to each post/page
+ */
+
+function uciseventeen_meta_description()
+{
+    $html = '';
+
+    $desc = get_bloginfo('description');
+
+    /**
+     * single post instance
+     */
+    if(is_single() || is_page()) {
+        $desc = strip_tags(get_the_excerpt());
+    }
+
+    if(is_category()) {
+        $catId = get_query_var('cat');
+        $desc = strip_tags(category_description($catId));
+    }
+
+    $html .= '<meta name="description" content="' . $desc . '">' . "\n";
+
+    echo $html;
+}
+add_action('wp_head', 'uciseventeen_meta_description');
+
+add_filter('get_archives_link', 'uciseventeen_get_archives_link', 10, 6);
+
+/**
+ * force excerpts for pages
+ */
+function uciseventeen_page_excerpts() {
+    add_post_type_support('page', 'excerpt');
+}
+add_action('init', 'uciseventeen_page_excerpts');
 
 /*function uciseventeen_so_before_content($stuff) {
     return $stuff;

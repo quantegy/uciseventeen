@@ -8,7 +8,7 @@
 ?>
 <form role="search" method="get" id="searchform" class="form-inline" action="<?php bloginfo('url'); ?>">
     <label class="sr-only" for="search-text">Search</label>
-    <input class="form-control" id="search-text" value="" name="s" id="s">
+    <input class="form-control" id="search-text" value="" name="s">
     <div class="btn-group">
         <button class="btn btn-default" type="submit">Search</button>
     </div>

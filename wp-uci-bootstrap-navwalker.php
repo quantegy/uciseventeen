@@ -40,7 +40,7 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
          */
         public function start_lvl( &$output, $depth = 0, $args = array() ) {
             $indent = str_repeat( "\t", $depth );
-            $output .= "\n$indent<ul class=\" dropdown-menu\" >\n";
+            $output .= "\n$indent<ul class=\"dropdown-menu\" >\n";
         }
 
         /**
@@ -108,7 +108,7 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
                 if ( $args->has_children ) {
                     //$class_names .= ' dropdown';
 
-                    if(empty($item->url)) {
+                    if(empty($item->url) || $item->url === '#') {
                         $class_names .= ' dropdown-only';
                     } else {
                         $class_names .= ' link-dropdown';
@@ -130,12 +130,12 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
                     $output .= $indent . '<li ' . $id . $value . $class_names . '>';
 
                     if($args->has_children) {
-                        if(!empty($item->url)) {
+                        if(!empty($item->url) && $item->url !== '#') {
                             $output .= '<a class="btn" href="' . $item->url . '">' . $item->title . '</a>';
                         }
 
                         $output .= '<button aria-expanded="false" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" type="button">';
-                        if(!empty($item->url)) {
+                        if(!empty($item->url) && $item->url !== '#') {
                             $output .= '<span class="sr-only">Toggle dropdown: ' . $item->title . '</span>';
                         } else {
                             $output .= '<span><span class="sr-only">Toggle dropdown: </span>' . $item->title . '</span>';
@@ -166,7 +166,7 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
                     if($depth === 0) {
                         $atts['class'] = 'btn';
                     }
-                    $atts['href'] = ! empty( $item->url ) ? $item->url : '';
+                    $atts['href'] = !empty( $item->url ) ? $item->url : '';
                 }
                 $atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args );
                 $attributes = '';
@@ -199,7 +199,7 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
                 endif;
 
                 $item_output .= $args->link_before . (!$args->has_children) ? apply_filters( 'the_title', $item->title, $item->ID ) : '' . $args->link_after;
-                $item_output .= ( $args->has_children && 0 === $depth ) ? ' </a>' : '</a>';
+                $item_output .= ( $args->has_children && 0 === $depth ) ? ' ' : '</a>';
                 $item_output .= $args->after;
                 $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
             }
