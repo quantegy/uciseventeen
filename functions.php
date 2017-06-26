@@ -172,16 +172,6 @@ function uciseventeen_widgets_init()
     register_nav_menu('footer-1', __('Footer column one', 'uciseventeen'));
     register_nav_menu('footer-2', __('Footer column two', 'uciseventeen'));
     register_nav_menu('footer-3', __('Footer column three', 'uciseventeen'));
-
-    /*register_sidebar(array(
-        'name' => __('Footer Column 4', 'uciseventeen'),
-        'id' => 'footer-4',
-        'description' => 'Footer fourth column for additional content',
-        'before_widget' => '',
-        'after_widget' => '',
-        'before_title' => '<span class="sr-only">',
-        'after_title' => '</span>'
-    ));*/
 }
 
 add_action('widgets_init', 'uciseventeen_widgets_init');

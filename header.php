@@ -56,7 +56,7 @@
             'depth' => 2,
             'container' => 'div',
             'container_class' => 'collapse navbar-collapse',
-            'container_id' => 'bs-example-navbar-collapse-1',
+            'container_id' => 'nav-primary-items',
             'menu_class' => 'nav navbar-nav',
             'fallback_cb' => 'WP_UCI_Bootstrap_Navwalker::fallback',
             'walker' => new WP_UCI_Bootstrap_Navwalker()

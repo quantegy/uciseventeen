@@ -10,6 +10,7 @@ if (post_password_required()) {
 }
 ?>
 <div class="container" id="comments">
+    <h2 class="sr-only">Comments</h2>
     <?php if (have_comments()): ?>
         <div class="row top-buffer">
             <div class="panel panel-default">
