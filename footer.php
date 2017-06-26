@@ -33,9 +33,6 @@
                     <?php endif; ?>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 pull-right">
-                    <?php //if(is_active_sidebar('footer-4')): ?>
-                    <?php //dynamic_sidebar('footer-4'); ?>
-                    <?php //endif; ?>
                     <address>
                         <?php uciseventeen_get_siteowner(); ?>
                     </address>
