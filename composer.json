@@ -10,5 +10,10 @@
         }
     ],
     "require": {},
-    "repositories": []
+    "repositories": [],
+    "autoload": {
+        "classmap": [
+            "inc/"
+        ]
+    }
 }

@@ -11,6 +11,7 @@
                             'items_wrap' => '<ul id="%1$s">%3$s</ul>'
                         )); ?>
                     <?php endif; ?>
+                    <?php \UCI\Wordpress\Customize\Footer\Settings::getLogoSpot('footer_1_logo'); ?>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-sm-offset-0 col-md-6 col-md-offset-0">
                     <?php if(has_nav_menu('footer-2')): ?>
@@ -19,6 +20,7 @@
                             'items_wrap' => '<ul id="%1$s">%3$s</ul>'
                         )); ?>
                     <?php endif; ?>
+                    <?php \UCI\Wordpress\Customize\Footer\Settings::getLogoSpot('footer_2_logo'); ?>
                 </div>
             </div>
         </div>
@@ -31,11 +33,13 @@
                             'items_wrap' => '<ul id="%1$s">%3$s</ul>'
                         )); ?>
                     <?php endif; ?>
+                    <?php \UCI\Wordpress\Customize\Footer\Settings::getLogoSpot('footer_3_logo'); ?>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 pull-right">
                     <address>
                         <?php uciseventeen_get_siteowner(); ?>
                     </address>
+                    <?php \UCI\Wordpress\Customize\Footer\Settings::getLogoSpot('footer_4_logo'); ?>
                 </div>
             </div>
         </div>

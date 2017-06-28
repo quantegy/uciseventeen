@@ -13,6 +13,8 @@ ini_set('display_errors', false);
 
 @define('UCI_SEVENTEEN_VERSION', '0.1');
 
+require_once 'vendor/autoload.php';
+
 /**
  * register custom uci-bootstrap nav walker for main menu
  */
@@ -193,9 +195,8 @@ add_filter('site_transient_update_plugins', 'uciseventeen_filter_plugin_updates'
 
 function uciseventeen_customize_register($wp_customize)
 {
-    require_once 'wp-uci-settings.php';
-
-    $settings = new \UCI\Wordpress\Customize\Settings($wp_customize);
+    $headerSettings = new \UCI\Wordpress\Customize\Header\Settings($wp_customize);
+    $footerSettings = new \UCI\Wordpress\Customize\Footer\Settings($wp_customize);
 }
 
 add_action('customize_register', 'uciseventeen_customize_register');
@@ -217,9 +218,7 @@ function uciseventeen_home_url($return = false)
 
 function uciseventeen_wordmark($return = false)
 {
-    require_once 'wp-uci-settings.php';
-
-    $mediaId = get_theme_mod(\UCI\Wordpress\Customize\Settings::WORDMARK_SETTING, '');
+    $mediaId = get_theme_mod(\UCI\Wordpress\Customize\Header\Settings::WORDMARK_SETTING, '');
 
     $html = '<a href="' . uciseventeen_home_url(true) . '">';
 
@@ -241,15 +240,13 @@ function uciseventeen_wordmark($return = false)
 }
 
 function uciseventeen_get_siteowner() {
-    require_once 'wp-uci-settings.php';
-
     $siteOwner = array(
-        'site_owner' => get_theme_mod(\UCI\Wordpress\Customize\Settings::SITE_OWNER_SETTING),
-        'site_owner_address_one' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_ONE_SETTING),
-        'site_owner_address_two' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_TWO_SETTING),
-        'site_owner_address_three' => get_theme_mod(\UCI\Wordpress\Customize\Settings::ADDRESS_THREE_SETTING),
-        'site_owner_phone' => get_theme_mod(\UCI\Wordpress\Customize\Settings::PHONE_SETTING),
-        'site_owner_email' => get_theme_mod(\UCI\Wordpress\Customize\Settings::EMAIL_SETTING)
+        'site_owner' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::SITE_OWNER_SETTING),
+        'site_owner_address_one' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::ADDRESS_ONE_SETTING),
+        'site_owner_address_two' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::ADDRESS_TWO_SETTING),
+        'site_owner_address_three' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::ADDRESS_THREE_SETTING),
+        'site_owner_phone' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::PHONE_SETTING),
+        'site_owner_email' => get_theme_mod(\UCI\Wordpress\Customize\Footer\Settings::EMAIL_SETTING)
     );
 
     $html = '';
@@ -264,11 +261,9 @@ function uciseventeen_get_siteowner() {
 
 function uciseventeen_get_search_form($form)
 {
-    require_once 'wp-uci-settings.php';
+    $type = get_theme_mod(\UCI\Wordpress\Customize\Header\Settings::SEARCH_FORM_SETTING, 'uci');
 
-    $type = get_theme_mod(\UCI\Wordpress\Customize\Settings::SEARCH_FORM_SETTING, 'uci');
-
-    if ($type === \UCI\Wordpress\Customize\Settings::SEARCH_FORM_UCI) {
+    if ($type === \UCI\Wordpress\Customize\Header\Settings::SEARCH_FORM_UCI) {
         $form = template(get_stylesheet_directory() . '/templates/form/uci.php');
     } else {
         $form = template(get_stylesheet_directory() . '/templates/form/wp.php');
