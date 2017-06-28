@@ -165,8 +165,8 @@ function uciseventeen_widgets_init()
         'name' => __('Main Sidebar', 'uciseventeen'),
         'id' => 'main-sidebar',
         'description' => __('Right side column for primary sidebar navigation', 'uciseventeen'),
-        'before_widget' => '<section class="widget %2$s" id="$1$s">',
-        'after_widget' => '</section>',
+        'before_widget' => '<div class="widget %2$s" id="%1$s">',
+        'after_widget' => '</div>',
         'before_title' => '<h2 class="widget-title">',
         'after_title' => '</h2>'
     ));
