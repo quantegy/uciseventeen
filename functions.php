@@ -44,8 +44,8 @@ if (is_plugin_active('so-widgets-bundle/so-widgets-bundle.php')) {
  */
 function uciseventeen_so_notices()
 {
-    if (!is_plugin_active('so-widgets-bundle/so-widgets-bundle.php') ||
-        !is_plugin_active_for_network('so-widgets-bundle/so-widgets-bundle.php')
+    if (!is_plugin_active('so-widgets-bundle/so-widgets-bundle.php') /**||
+        !is_plugin_active_for_network('so-widgets-bundle/so-widgets-bundle.php')*/
     ) {
         ?>
         <div class="update-nag notice">
@@ -57,8 +57,8 @@ function uciseventeen_so_notices()
         <?php
     }
 
-    if (!is_plugin_active('siteorigin-panels/siteorigin-panels.php') ||
-        !is_plugin_active_for_network('siteorigin-panels/siteorigin-panels.php')
+    if (!is_plugin_active('siteorigin-panels/siteorigin-panels.php') /**||
+        !is_plugin_active_for_network('siteorigin-panels/siteorigin-panels.php')*/
     ) {
         ?>
         <div class="error notice">
@@ -602,13 +602,13 @@ function uciseventeen_comment_form_fields($fields)
     $fields = array(
         'author' => '<div class="form-group comment-form-author">' .
             '<label for="author">' . __('Name', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
-            '<input class="form-control" id="author" name="author" type="text" value="' . esc_attr($author['comment_author']) . '" size="30"' . $ariaRequired . '>' .
+            '<input class="form-control" id="author" name="author" type="text" value="' . esc_attr($author['comment_author']) . '" size="30" ' . $ariaRequired . '>' .
             '</div>',
-        'email' => '<div class="fomr-group comment-form-email">' .
+        'email' => '<div class="form-group comment-form-email">' .
             '<label for="email">' . __('Email', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
             '<input class="form-control" id="email" name="email" ' . ($html5 ? 'type="email"' : 'type="text"') . ' value="' . esc_attr($author['comment_author_email']) . '" size="30" ' . $ariaRequired . '>' .
             '</div>',
-        'url' => '<div class="fomr-group comment-form-url">' .
+        'url' => '<div class="form-group comment-form-url">' .
             '<label for="url">' . __('Website', 'uciseventeen') . ($required ? '<span class="required">*</span>' : '') . '</label>' .
             '<input class="form-control" id="url" name="url" ' . ($html5 ? 'type="url"' : 'type="text"') . ' value="' . esc_attr($author['comment_author_url']) . '" size="30">' .
             '</div>'

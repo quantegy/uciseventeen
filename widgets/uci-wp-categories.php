@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * Class UCI_Categories_Widget
+ * @todo fix dropdown selection
+ */
 class UCI_Categories_Widget extends WP_Widget_Categories {
     public function widget($args, $instance)
     {
@@ -31,6 +36,7 @@ class UCI_Categories_Widget extends WP_Widget_Categories {
             $cat_args['show_option_none'] = __('Select category');
             $cat_args['id'] = $dropdown_id;
             $cat_args['class'] = 'form-control';
+            $cat_args['hide_if_empty'] = true;
 
             echo '<div class="form-group">';
             wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
@@ -41,8 +47,8 @@ class UCI_Categories_Widget extends WP_Widget_Categories {
                 (function() {
                     var dropdown = document.getElementById('<?php echo esc_js($dropdown_id); ?>');
                     function onCatChange() {
-                        if(dropdown.options[dropdown.selectedIndex].value > 0)) {
-                            location.href = '<?php echo home_url(); ?>/cat=' + dropdown.options[dropdown.selectedIndex].value;
+                        if(dropdown.options[dropdown.selectedIndex].value > 0) {
+                            location.href = '<?php echo home_url('/'); ?>?cat=' + dropdown.options[dropdown.selectedIndex].value;
                         }
                     }
                     dropdown.onchange = onCatChange;
