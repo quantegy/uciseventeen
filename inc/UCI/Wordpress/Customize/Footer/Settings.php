@@ -5,19 +5,10 @@
  * Date: 6/20/17
  * Time: 11:13 AM
  */
-namespace UCI\Wordpress\Customize;
+namespace UCI\Wordpress\Customize\Footer;
 
-class Settings {
-    /**
-     * @var \WP_Customize_Manager
-     */
-    private $wpCustomize;
-
-    const SECTION_NAME = 'uciseventeen_settings';
-    const WORDMARK_SETTING = 'wordmark_image';
-    const SEARCH_FORM_SETTING = 'search_form';
-    const SEARCH_FORM_UCI = 'uci';
-    const SEARCH_FORM_WP = 'wp';
+class Settings extends \UCI\Wordpress\Customize\Settings {
+    const SECTION_NAME = 'uciseventeen_footer_settings';
     const SITE_OWNER_SETTING = 'site_owner';
     const SITE_OWNER_DEFAULT = 'UC Irvine';
     const ADDRESS_ONE_SETTING = 'site_owner_address_one';
@@ -25,40 +16,89 @@ class Settings {
     const ADDRESS_THREE_SETTING = 'site_owner_address_three';
     const PHONE_SETTING = 'site_owner_phone';
     const EMAIL_SETTING = 'site_owner_email';
-
-    /**
-     * @return \WP_Customize_Manager
-     */
-    public function getWpCustomize()
-    {
-        return $this->wpCustomize;
-    }
-
-    /**
-     * @param \WP_Customize_Manager $wpCustomize
-     */
-    public function setWpCustomize(\WP_Customize_Manager $wpCustomize)
-    {
-        $this->wpCustomize = $wpCustomize;
-    }
+    const LOGOS_SETTING = array(
+        array('slug' => 'footer_1_logo', 'label' => 'Logo: Column 1'),
+        array('slug' => 'footer_2_logo', 'label' => 'Logo: Column 2'),
+        array('slug' => 'footer_3_logo', 'label' => 'Logo: Column 3'),
+        array('slug' => 'footer_4_logo', 'label' => 'Logo: Column 4'),
+    );
 
     public function __construct($wpCustomize)
     {
-        $this->setWpCustomize($wpCustomize);
+        parent::__construct($wpCustomize);
 
         $this->getWpCustomize()->add_section(self::SECTION_NAME, array(
-            'title' => __('UCI Settings', 'uciseventeen'),
+            'title' => __('UCI: Footer', 'uciseventeen'),
             'priority' => 100,
             'capability' => 'edit_theme_options',
             'description' => __('Change options here', 'uciseventeen')
         ));
 
-        $this->addWordmark();
-        $this->addSearchType();
         $this->addSiteOwner();
         $this->addAddress();
         $this->addPhone();
         $this->addEmail();
+
+        $this->addLogos();
+    }
+
+    public static function getLogoSpot($slug) {
+        $logoIndex = array_search($slug, array_column(self::LOGOS_SETTING, 'slug'));
+
+        //var_dump($logoIndex);
+        if($logoIndex >= 0) {
+            $logo = self::LOGOS_SETTING[$logoIndex];
+
+            $html = '';
+
+            $logoLink = get_theme_mod($slug.'_link');
+            $logoImgId = get_theme_mod($slug);
+
+            if(!empty($logoImgId)) {
+                $html .= '<div>';
+
+                if(!empty($logoLink)) {
+                    $html .= '<a href="' . $logoLink . '">' . wp_get_attachment_image($logoImgId) . '</a>';
+                } else {
+                    $html .= wp_get_attachment_image($logoImgId);
+                }
+
+                $html .= '</div>';
+            }
+        }
+
+        echo $html;
+    }
+
+    private function addLogos() {
+        foreach (self::LOGOS_SETTING as $logo) {
+            $this->makeLogo($logo['slug'], $logo['label']);
+        }
+    }
+
+    private function makeLogo($slug, $label = 'Logo') {
+        $this->getWpCustomize()->add_setting($slug, array(
+            'default' => ''
+        ));
+
+        $this->getWpCustomize()->add_control(new \WP_Customize_Media_Control($this->getWpCustomize(), $slug, array(
+            'label' => __($label, 'uciseventeen'),
+            'section' => self::SECTION_NAME,
+            'mime_type' => 'image'
+        )));
+
+        $linkSlug = $slug . '_link';
+        $linkLabel = $label . ' Link';
+        $this->getWpCustomize()->add_setting($linkSlug, array(
+            'default' => ''
+        ));
+
+        $this->getWpCustomize()->add_control(new \WP_Customize_Control($this->getWpCustomize(), $linkSlug, array(
+            'label' => __($linkLabel, 'uciseventeen'),
+            'section' => self::SECTION_NAME,
+            'settings' => $linkSlug,
+            'type' => 'text'
+        )));
     }
 
     private function addPhone() {
@@ -132,35 +172,6 @@ class Settings {
             'section' => self::SECTION_NAME,
             'settings' => self::SITE_OWNER_SETTING,
             'type' => 'text'
-        )));
-    }
-
-    private function addWordmark() {
-        $this->getWpCustomize()->add_setting(self::WORDMARK_SETTING, array(
-            'default' => ''
-        ));
-
-        $this->getWpCustomize()->add_control(new \WP_Customize_Media_Control($this->getWpCustomize(), self::WORDMARK_SETTING, array(
-            'label' => __('Wordmark image', 'uciseventeen'),
-            'section' => self::SECTION_NAME,
-            'mime_type' => 'image'
-        )));
-    }
-
-    private function addSearchType() {
-        $this->getWpCustomize()->add_setting(self::SEARCH_FORM_SETTING, array(
-            'default' => self::SEARCH_FORM_UCI
-        ));
-
-        $this->getWpCustomize()->add_control(new \WP_Customize_Control($this->getWpCustomize(), self::SEARCH_FORM_SETTING, array(
-            'label' => __('Search Type', 'uciseventeen'),
-            'section' => self::SECTION_NAME,
-            'settings' => self::SEARCH_FORM_SETTING,
-            'type' => 'select',
-            'choices' => array(
-                self::SEARCH_FORM_UCI => __('UCI', 'uciseventeen'),
-                self::SEARCH_FORM_WP => __('Wordpress', 'uciseventeen')
-            )
         )));
     }
 }
