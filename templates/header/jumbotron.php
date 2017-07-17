@@ -6,7 +6,7 @@
  * Time: 4:41 PM
  */
 ?>
-<div class="jumbotron" data-aspect-ratio="1440:450" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
+<div class="jumbotron" data-aspect-ratio="1440:450" style="background-image: url('<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>');">
     <div class="media-overlay overlay-transparent">
         <div id="masthead">
             <div class="container">
