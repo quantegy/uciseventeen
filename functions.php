@@ -13,6 +13,10 @@ ini_set('display_errors', false);
 
 @define('UCI_SEVENTEEN_VERSION', '0.1');
 
+@define('UCI_SEVENTEEN_JUMBOTRON_MEDIA_KEY', 'jumbotron-media-id');
+
+@define('UCISEVENTEEN_POST_FORMAT_KEY', 'uci_post_format');
+
 require_once 'vendor/autoload.php';
 
 /**
@@ -90,6 +94,11 @@ require_once 'wp-uci-category-walker.php';
 
 function uciseventeen_setup()
 {
+	/**
+	 * remove core post format feature
+	 */
+	remove_theme_support('post-formats');
+
     /*
 	 * Let WordPress manage the document title.
 	 * By adding theme support, we declare that this theme does not use a
@@ -118,7 +127,7 @@ function uciseventeen_setup()
 	 *
 	 * See: https://codex.wordpress.org/Post_Formats
 	 */
-    add_theme_support('post-formats', array(
+    /*add_theme_support('post-formats', array(
         'aside',
         'image',
         'video',
@@ -126,7 +135,7 @@ function uciseventeen_setup()
         'link',
         'gallery',
         'audio',
-    ));
+    ));*/
 
     // Add theme support for Custom Logo.
     /*add_theme_support( 'custom-logo', array(
@@ -135,7 +144,6 @@ function uciseventeen_setup()
         'flex-width'  => true,
     ) );*/
 }
-
 add_action('after_setup_theme', 'uciseventeen_setup');
 
 
@@ -754,6 +762,131 @@ function uciseventeen_page_excerpts() {
     add_post_type_support('page', 'excerpt');
 }
 add_action('init', 'uciseventeen_page_excerpts');
+
+/**
+ * add metabox area in admin for adding a jumbotron image
+ */
+//add_action('add_meta_boxes', 'uciseventeen_jumbotron_metabox');
+function uciseventeen_jumbotron_metabox() {
+    add_meta_box('jumbotron-image', __('Jumbotron image', 'uciseventeen'), 'uciseventeen_jumbotron_metabox_content', array('post', 'page'), 'normal');
+}
+
+/**
+ * save jumbotron image data
+ */
+add_action('save_post', 'uciseventeen_save_jumbotron');
+function uciseventeen_save_jumbotron($postId, $post) {
+    update_post_meta($postId, 'jumbotron-media-id', $_POST['jumbotron-media-id']);
+}
+
+/**
+ * create metabox admin content
+ */
+function uciseventeen_jumbotron_metabox_content() {
+    wp_enqueue_media();
+	wp_enqueue_script( 'jumbotron-meta-box-media', get_template_directory_uri() . '/assets/jumbotron-media.js?nonce=' . time(), array('jquery') );
+	wp_enqueue_style('cropper-css', get_template_directory_uri() . '/assets/cropper/dist/cropper.css');
+	wp_enqueue_script('cropper-js', get_template_directory_uri() . '/assets/cropper/dist/cropper.js', array('jquery'));
+
+	$media = get_post_meta(get_the_ID(), UCI_SEVENTEEN_JUMBOTRON_MEDIA_KEY, true);
+	$image = wp_get_attachment_image($media, 'full', false, array('style' => 'max-width:100%; height:auto;', 'class' => 'jumbotron-image'));
+	?>
+    <input type="hidden" id="jumbotron-media-id" name="<?php echo UCI_SEVENTEEN_JUMBOTRON_MEDIA_KEY; ?>" value="<?php echo $media; ?>">
+    <button type="button" id="jumbotron-upload-button" class="button" style="display:<?php echo ($media) ? 'none' : 'block'; ?>">Upload</button>
+    <button type="button" id="jumbotron-remove-button" class="button" style="display:<?php echo ($media) ? 'block' : 'none'; ?>">Remove</button>
+    <p class="jumbotron-preview"><?php echo $image; ?></p>
+    <button class="button" id="save-crop-button" type="button" style="display: <?php echo ($media) ? 'block' : 'none'; ?>">Crop</button>
+	<?php
+}
+
+/**
+ * check for if a post has a jumbotron image
+ */
+function uciseventeen_has_jumbotron() {
+    global $post;
+
+    $attachmentId = get_post_meta($post->ID, UCI_SEVENTEEN_JUMBOTRON_MEDIA_KEY, true);
+    $hasIt = (bool) $attachmentId;
+
+    return $hasIt;
+}
+
+/**
+ * provide url for jumbotron image
+ */
+function uciseventeen_get_post_jumbotron_url($postId, $size = 'full') {
+    $attachmentId = get_post_meta($postId, UCI_SEVENTEEN_JUMBOTRON_MEDIA_KEY, true);
+
+    return wp_get_attachment_url($attachmentId);
+}
+
+/**
+ * custom formats for UCI template
+ */
+add_action('add_meta_boxes', 'uciseventeen_add_formats_metabox');
+function uciseventeen_add_formats_metabox() {
+    add_meta_box('uciformats', 'Templates', 'uciseventeen_formats_metabox_content', array('post', 'page'), 'normal');
+}
+
+function uciseventeen_get_post_formats() {
+    return array(
+        array(
+            'value' => 'style-left',
+            'label' => 'Left',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left.gif'
+        ),
+        array(
+            'value' => 'style-left-full',
+            'label' => 'Left Full',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-full.gif'
+        ),
+        array(
+            'value' => 'style-left-wide',
+            'label' => 'Left Wide',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-wide.gif'
+        ),
+        array(
+            'value' => 'style-wide',
+            'label' => 'Wide',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/style-wide.gif'
+        )
+    );
+}
+
+function uciseventeen_formats_metabox_content() {
+    wp_enqueue_style('post-formats-css', get_template_directory_uri() . '/assets/format-icons.css');
+
+    $options = uciseventeen_get_post_formats();
+    $current = get_post_meta(get_the_ID(), UCISEVENTEEN_POST_FORMAT_KEY, true);
+
+    echo '<div>';
+    foreach($options as $option) {
+        ?>
+        <label class="format-selector">
+            <input type="radio" name="<?php echo UCISEVENTEEN_POST_FORMAT_KEY; ?>" value="<?php echo $option['value']; ?>" <?php echo ($option['value'] === $current || ($option['value'] === 'style-left-wide' && empty($current))) ? 'checked' : ''; ?>>
+            <img src="<?php echo $option['icon']; ?>" alt="<?php echo $option['label'] ?>">
+        </label>
+        <?php
+    }
+    echo '</div>';
+    ?>
+    <div class="format-legend">
+        <div class="format blue">Image</div>
+        <div class="format yellow">Content</div>
+        <div class="format gray">Sidebar</div>
+    </div>
+    <?php
+}
+
+/**
+ * save format info
+ */
+add_action('save_post', 'uciseventeen_save_post_format');
+function uciseventeen_save_post_format($postId, $post) {
+    if(!add_post_meta($postId, UCISEVENTEEN_POST_FORMAT_KEY, $_POST[UCISEVENTEEN_POST_FORMAT_KEY], true)) {
+        update_post_meta($postId, UCISEVENTEEN_POST_FORMAT_KEY, $_POST[UCISEVENTEEN_POST_FORMAT_KEY]);
+    }
+}
 
 /*function uciseventeen_so_before_content($stuff) {
     return $stuff;
