@@ -1,0 +1,21 @@
+.format-legend {
+
+}
+
+.format-legend .format {
+    color: #fff;
+    width: 55px;
+    height: 55px;
+}
+
+.format-legend .blue {
+    background-color: #0064a4;
+}
+
+.format-legend .yellow {
+    background-color: #ffb400;
+}
+
+.format-legend .gray {
+    background-color: #636363;
+}

@@ -66,7 +66,7 @@
 </nav>
 
 <header>
-    <?php if(is_single() && has_post_thumbnail()): ?>
+    <?php if(is_single() && uciseventeen_has_jumbotron()): ?>
     <?php get_template_part('templates/header/jumbotron'); ?>
     <?php else: ?>
     <?php get_template_part('templates/header/masthead'); ?>
