@@ -152,12 +152,12 @@ add_action('after_setup_theme', 'uciseventeen_setup');
  */
 function uciseventeen_scripts()
 {
-    wp_enqueue_style('bootstrap-uci', '//web.communications.uci.edu/assets/2015/css/bootstrap3-uci-cascade.css');
+    wp_enqueue_style('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('uciseventeen', get_stylesheet_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_script('jquery-2.1.4', '//code.jquery.com/jquery-2.1.4.min.js', array(), UCI_SEVENTEEN_VERSION, true);
     wp_enqueue_script('bootstrap-3.3.4', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js', array(), UCI_SEVENTEEN_VERSION, true);
-    wp_enqueue_script('bootstrap-uci', '//web.communications.uci.edu/assets/2015/js/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
+    wp_enqueue_script('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
 }
 
 add_action('wp_enqueue_scripts', 'uciseventeen_scripts');
@@ -825,30 +825,30 @@ function uciseventeen_get_post_jumbotron_url($postId, $size = 'full') {
  */
 add_action('add_meta_boxes', 'uciseventeen_add_formats_metabox');
 function uciseventeen_add_formats_metabox() {
-    add_meta_box('uciformats', 'Templates', 'uciseventeen_formats_metabox_content', array('post', 'page'), 'normal');
+    add_meta_box('uciformats', 'Layout', 'uciseventeen_formats_metabox_content', array('post', 'page'), 'normal');
 }
 
 function uciseventeen_get_post_formats() {
     return array(
-        array(
-            'value' => 'column-wrap',
-            'label' => 'Column Wrap',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Wrap.png'
-        ),
-        array(
-            'value' => 'row-wrap',
-            'label' => 'Row Wrap',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Wrap.png'
-        ),
         array(
             'value' => 'column-full',
             'label' => 'Column Full',
             'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Full.png'
         ),
         array(
+            'value' => 'column-wrap',
+            'label' => 'Column Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Wrap.png'
+        ),
+        array(
             'value' => 'row-full',
             'label' => 'Row Full',
             'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Full.png'
+        ),
+        array(
+            'value' => 'row-wrap',
+            'label' => 'Row Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Wrap.png'
         )
     );
 }

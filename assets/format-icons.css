@@ -1,21 +1,32 @@
-.format-legend {
-
+#uciformats label {
+	display: inline-block;
+	margin: 15px;
 }
 
-.format-legend .format {
-    color: #fff;
-    width: 55px;
-    height: 55px;
+#uciformats label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
 
-.format-legend .blue {
-    background-color: #0064a4;
+#uciformats label input + img {
+	box-sizing: border-box;
+	width: 200px;
+	height: 200px;
 }
 
-.format-legend .yellow {
-    background-color: #ffb400;
+#uciformats label input:checked + img {
+	border: 5px solid blue;
+	opacity: .5;
+	box-shadow: 5px 5px 15px #333;
 }
 
-.format-legend .gray {
-    background-color: #636363;
+#uciformats label img:hover {
+	border: 5px solid blue;
+	opacity: .5;
 }
