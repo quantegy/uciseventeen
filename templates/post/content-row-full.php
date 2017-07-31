@@ -5,4 +5,4 @@
  * Date: 7/27/17
  * Time: 1:44 PM
  */
-echo 'LEFT WIDE';
+echo 'ROW FULL';

@@ -152,7 +152,7 @@ add_action('after_setup_theme', 'uciseventeen_setup');
  */
 function uciseventeen_scripts()
 {
-    wp_enqueue_style('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION, true);
+    wp_enqueue_style('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('uciseventeen', get_stylesheet_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_script('jquery-2.1.4', '//code.jquery.com/jquery-2.1.4.min.js', array(), UCI_SEVENTEEN_VERSION, true);
@@ -825,30 +825,30 @@ function uciseventeen_get_post_jumbotron_url($postId, $size = 'full') {
  */
 add_action('add_meta_boxes', 'uciseventeen_add_formats_metabox');
 function uciseventeen_add_formats_metabox() {
-    add_meta_box('uciformats', 'Templates', 'uciseventeen_formats_metabox_content', array('post', 'page'), 'normal');
+    add_meta_box('uciformats', 'Layout', 'uciseventeen_formats_metabox_content', array('post', 'page'), 'normal');
 }
 
 function uciseventeen_get_post_formats() {
     return array(
         array(
-            'value' => 'style-left',
-            'label' => 'Left',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left.gif'
+            'value' => 'column-full',
+            'label' => 'Column Full',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Full.png'
         ),
         array(
-            'value' => 'style-left-full',
-            'label' => 'Left Full',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-full.gif'
+            'value' => 'column-wrap',
+            'label' => 'Column Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Wrap.png'
         ),
         array(
-            'value' => 'style-left-wide',
-            'label' => 'Left Wide',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-wide.gif'
+            'value' => 'row-full',
+            'label' => 'Row Full',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Full.png'
         ),
         array(
-            'value' => 'style-wide',
-            'label' => 'Wide',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-wide.gif'
+            'value' => 'row-wrap',
+            'label' => 'Row Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Wrap.png'
         )
     );
 }
@@ -863,19 +863,12 @@ function uciseventeen_formats_metabox_content() {
     foreach($options as $option) {
         ?>
         <label class="format-selector">
-            <input type="radio" name="<?php echo UCISEVENTEEN_POST_FORMAT_KEY; ?>" value="<?php echo $option['value']; ?>" <?php echo ($option['value'] === $current || ($option['value'] === 'style-left-wide' && empty($current))) ? 'checked' : ''; ?>>
+            <input type="radio" name="<?php echo UCISEVENTEEN_POST_FORMAT_KEY; ?>" value="<?php echo $option['value']; ?>" <?php echo ($option['value'] === $current || ($option['value'] === 'column-full' && empty($current))) ? 'checked' : ''; ?>>
             <img src="<?php echo $option['icon']; ?>" alt="<?php echo $option['label'] ?>">
         </label>
         <?php
     }
     echo '</div>';
-    ?>
-    <div class="format-legend">
-        <div class="format blue">Image</div>
-        <div class="format yellow">Content</div>
-        <div class="format gray">Sidebar</div>
-    </div>
-    <?php
 }
 
 /**
