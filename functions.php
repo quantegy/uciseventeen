@@ -152,12 +152,12 @@ add_action('after_setup_theme', 'uciseventeen_setup');
  */
 function uciseventeen_scripts()
 {
-    wp_enqueue_style('bootstrap-uci', '//web.communications.uci.edu/assets/2015/css/bootstrap3-uci-cascade.css');
+    wp_enqueue_style('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION, true);
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('uciseventeen', get_stylesheet_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_script('jquery-2.1.4', '//code.jquery.com/jquery-2.1.4.min.js', array(), UCI_SEVENTEEN_VERSION, true);
     wp_enqueue_script('bootstrap-3.3.4', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js', array(), UCI_SEVENTEEN_VERSION, true);
-    wp_enqueue_script('bootstrap-uci', '//web.communications.uci.edu/assets/2015/js/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
+    wp_enqueue_script('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
 }
 
 add_action('wp_enqueue_scripts', 'uciseventeen_scripts');
