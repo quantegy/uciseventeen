@@ -831,24 +831,24 @@ function uciseventeen_add_formats_metabox() {
 function uciseventeen_get_post_formats() {
     return array(
         array(
-            'value' => 'style-left',
-            'label' => 'Left',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left.gif'
+            'value' => 'column-wrap',
+            'label' => 'Column Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Wrap.png'
         ),
         array(
-            'value' => 'style-left-full',
-            'label' => 'Left Full',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-full.gif'
+            'value' => 'row-wrap',
+            'label' => 'Row Wrap',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Wrap.png'
         ),
         array(
-            'value' => 'style-left-wide',
-            'label' => 'Left Wide',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-left-wide.gif'
+            'value' => 'column-full',
+            'label' => 'Column Full',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Full.png'
         ),
         array(
-            'value' => 'style-wide',
-            'label' => 'Wide',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/style-wide.gif'
+            'value' => 'row-full',
+            'label' => 'Row Full',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Full.png'
         )
     );
 }
@@ -863,19 +863,12 @@ function uciseventeen_formats_metabox_content() {
     foreach($options as $option) {
         ?>
         <label class="format-selector">
-            <input type="radio" name="<?php echo UCISEVENTEEN_POST_FORMAT_KEY; ?>" value="<?php echo $option['value']; ?>" <?php echo ($option['value'] === $current || ($option['value'] === 'style-left-wide' && empty($current))) ? 'checked' : ''; ?>>
+            <input type="radio" name="<?php echo UCISEVENTEEN_POST_FORMAT_KEY; ?>" value="<?php echo $option['value']; ?>" <?php echo ($option['value'] === $current || ($option['value'] === 'column-full' && empty($current))) ? 'checked' : ''; ?>>
             <img src="<?php echo $option['icon']; ?>" alt="<?php echo $option['label'] ?>">
         </label>
         <?php
     }
     echo '</div>';
-    ?>
-    <div class="format-legend">
-        <div class="format blue">Image</div>
-        <div class="format yellow">Content</div>
-        <div class="format gray">Sidebar</div>
-    </div>
-    <?php
 }
 
 /**

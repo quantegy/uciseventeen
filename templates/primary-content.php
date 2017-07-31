@@ -9,7 +9,7 @@ $template = get_post_meta(get_the_ID(), UCISEVENTEEN_POST_FORMAT_KEY, true);
 ?>
 <?php if(is_single()): ?>
 <div class="container post-container">
-    <?php get_template_part('templates/post/content', (empty($template)) ? 'style-left': $template); ?>
+    <?php get_template_part('templates/post/content', (empty($template)) ? 'column-full': $template); ?>
 </div>
 <?php else: ?>
 <div>
