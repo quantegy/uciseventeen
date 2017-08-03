@@ -14,7 +14,7 @@
         <?php if(has_post_thumbnail()): ?>
         <div class="bucket-image bucket-image-center">
             <a href="<?php the_permalink(); ?>">
-                <?php the_post_thumbnail('large'); ?>
+                <?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
             </a>
         </div>
         <?php endif; ?>

@@ -8,9 +8,7 @@
 $template = get_post_meta(get_the_ID(), UCISEVENTEEN_POST_FORMAT_KEY, true);
 ?>
 <?php if(is_single()): ?>
-<div class="container post-container">
-    <?php get_template_part('templates/post/content', (empty($template)) ? 'column-full': $template); ?>
-</div>
+<?php get_template_part('templates/post/content', (empty($template)) ? 'column-full': $template); ?>
 <?php else: ?>
 <div>
     <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
