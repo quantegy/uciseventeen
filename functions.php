@@ -175,8 +175,8 @@ function uciseventeen_widgets_init()
         'description' => __('Right side column for primary sidebar navigation', 'uciseventeen'),
         'before_widget' => '<div class="widget %2$s" id="%1$s">',
         'after_widget' => '</div>',
-        'before_title' => '<h2 class="widget-title">',
-        'after_title' => '</h2>'
+        'before_title' => '<h4 class="widget-title">',
+        'after_title' => '</h4>'
     ));
 
     register_nav_menu('footer-1', __('Footer column one', 'uciseventeen'));
@@ -354,9 +354,17 @@ function uciseventeen_post_thumbnail_html($html, $post_id, $post_thumbnail_id, $
 {
     $src = wp_get_attachment_image_src($post_thumbnail_id, $size);
     $alt = get_the_title($post_id);
-    $class = 'img-responsive';
 
-    return '<img src="' . $src[0] . '" alt="' . $alt . '" class="' . $class . '">';
+	$attrString = '';
+
+    if(is_array($attr)) {
+        foreach($attr as $a => $b) {
+            $attrString .= $a . '="' . $b . '" ';
+        }
+        $attrString = trim($attrString);
+    }
+
+    return '<img src="' . $src[0] . '" alt="' . $alt . '" ' . $attrString .'>';
 }
 
 add_filter('post_thumbnail_html', 'uciseventeen_post_thumbnail_html', 10, 5);
