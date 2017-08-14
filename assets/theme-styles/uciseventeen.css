@@ -7383,6 +7383,9 @@ footer .container li {
 footer .container address {
   margin: 7.5px 0;
 }
+.category h2 {
+  font-size: 20px !important;
+}
 .content .portrait-header {
   width: 50%;
   float: left;
