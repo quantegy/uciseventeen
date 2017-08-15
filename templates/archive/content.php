@@ -6,18 +6,10 @@
  * Time: 2:01 PM
  */
 ?>
-<div class="widget col-xs-12 col-md-3">
-    <div class="widget-bucket clearfix">
-        <h3 class="widget-heading">
-            <span><?php the_title(); ?></span>
-        </h3>
-        <?php if(has_post_thumbnail()): ?>
-        <div class="bucket-image bucket-image-center">
-            <a href="<?php the_permalink(); ?>">
-                <?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
-            </a>
-        </div>
-        <?php endif; ?>
-        <p><?php the_excerpt(); ?></p>
-    </div>
+<div class="col-md-4">
+    <?php if(has_post_thumbnail()): ?>
+    <?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
+    <?php endif; ?>
+    <h2><?php the_title(); ?></h2>
+    <p><?php the_excerpt(); ?></p>
 </div>

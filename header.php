@@ -85,4 +85,4 @@
     </div>
 </nav>
 
-<main id="content-main">
+<main id="content">
