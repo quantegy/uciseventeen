@@ -7392,3 +7392,8 @@ footer .container address {
   margin-bottom: 0;
   margin-right: 20px;
 }
+.content .post-meta {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #656565;
+}
