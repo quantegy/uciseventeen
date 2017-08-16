@@ -157,7 +157,7 @@ function uciseventeen_scripts()
     wp_enqueue_style('uciseventeen', get_stylesheet_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_script('jquery-2.1.4', '//code.jquery.com/jquery-2.1.4.min.js', array(), UCI_SEVENTEEN_VERSION, true);
     wp_enqueue_script('bootstrap-3.3.4', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js', array(), UCI_SEVENTEEN_VERSION, true);
-    wp_enqueue_script('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
+    wp_enqueue_script('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/Bootstrap3-UCI-theme/js/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
 }
 
 add_action('wp_enqueue_scripts', 'uciseventeen_scripts');
@@ -783,7 +783,7 @@ function uciseventeen_jumbotron_metabox() {
  * save jumbotron image data
  */
 add_action('save_post', 'uciseventeen_save_jumbotron');
-function uciseventeen_save_jumbotron($postId, $post) {
+function uciseventeen_save_jumbotron($postId) {
     update_post_meta($postId, 'jumbotron-media-id', $_POST['jumbotron-media-id']);
 }
 
@@ -883,7 +883,7 @@ function uciseventeen_formats_metabox_content() {
  * save format info
  */
 add_action('save_post', 'uciseventeen_save_post_format');
-function uciseventeen_save_post_format($postId, $post) {
+function uciseventeen_save_post_format($postId) {
     if(!add_post_meta($postId, UCISEVENTEEN_POST_FORMAT_KEY, $_POST[UCISEVENTEEN_POST_FORMAT_KEY], true)) {
         update_post_meta($postId, UCISEVENTEEN_POST_FORMAT_KEY, $_POST[UCISEVENTEEN_POST_FORMAT_KEY]);
     }
