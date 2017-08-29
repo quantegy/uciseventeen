@@ -86,6 +86,7 @@ require_once 'widgets/uci-wp-recent-comments.php';
 require_once 'widgets/uci-wp-archives.php';
 require_once 'widgets/uci-wp-meta.php';
 require_once 'widgets/uci-wp-categories.php';
+require_once 'widgets/uci-wp-calendar.php';
 
 /**
  * category walker for list items
@@ -575,6 +576,10 @@ function uciseventeen_custom_widget_registration()
     // categories widget
     unregister_widget('WP_Widget_Categories');
     register_widget('UCI_Categories_Widget');
+
+    // calendar widget
+    unregister_widget('WP_Widget_Calendar');
+    register_widget('UCI_Calendar_Widget');
 }
 
 add_action('widgets_init', 'uciseventeen_custom_widget_registration');
