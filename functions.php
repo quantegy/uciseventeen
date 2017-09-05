@@ -30,55 +30,6 @@ require_once 'wp-uci-bootstrap-navwalker.php';
 require_once 'wp-uci-comments-walker.php';
 
 /**
- * Bootstrap pagination output
- */
-
-
-/**
- * include our custom sitorigin pagebuilder widgets
- * if the plugin is available
- */
-include_once ABSPATH . 'wp-admin/includes/plugin.php';
-if (is_plugin_active('so-widgets-bundle/so-widgets-bundle.php')) {
-    require_once 'widgets/parallax-headline.php';
-}
-
-/**
- * let user know that there is a pagebuilder dependency (optional)
- */
-function uciseventeen_so_notices()
-{
-    if (!is_plugin_active('so-widgets-bundle/so-widgets-bundle.php') /**||
-        !is_plugin_active_for_network('so-widgets-bundle/so-widgets-bundle.php')*/
-    ) {
-        ?>
-        <div class="update-nag notice">
-            <p>
-                <?php _e('Please, install SiteOrigin Widgets Bundle!', 'uciseventeen'); ?>
-                <a href="https://siteorigin.com/widgets-bundle/">Available here.</a>
-            </p>
-        </div>
-        <?php
-    }
-
-    if (!is_plugin_active('siteorigin-panels/siteorigin-panels.php') /**||
-        !is_plugin_active_for_network('siteorigin-panels/siteorigin-panels.php')*/
-    ) {
-        ?>
-        <div class="error notice">
-            <p>
-                <?php _e('SiteOrigin Page Builder is a preferred plugin. Install it!'); ?>
-                <a href="https://siteorigin.com/page-builder/">Available here.</a>
-            </p>
-        </div>
-        <?php
-    }
-}
-
-add_action('admin_notices', 'uciseventeen_so_notices');
-
-
-/**
  * require custom widget output classes
  */
 require_once 'widgets/uci-wp-recent-posts.php';
@@ -282,15 +233,6 @@ function uciseventeen_get_search_form($form)
 }
 
 add_filter('get_search_form', 'uciseventeen_get_search_form');
-
-function uciseventeen_so_widgets_widget_folders($folders)
-{
-    $folders[] = get_stylesheet_directory() . '/widgets/';
-
-    return $folders;
-}
-
-add_filter('siteorigin_widgets_widget_folders', 'uciseventeen_so_widgets_widget_folders');
 
 /**
  * @param $file string - Path to PHP file that acts as template
@@ -787,7 +729,7 @@ function uciseventeen_jumbotron_metabox() {
 /**
  * save jumbotron image data
  */
-add_action('save_post', 'uciseventeen_save_jumbotron');
+//add_action('save_post', 'uciseventeen_save_jumbotron');
 function uciseventeen_save_jumbotron($postId) {
     update_post_meta($postId, 'jumbotron-media-id', $_POST['jumbotron-media-id']);
 }
@@ -893,29 +835,4 @@ function uciseventeen_save_post_format($postId) {
         update_post_meta($postId, UCISEVENTEEN_POST_FORMAT_KEY, $_POST[UCISEVENTEEN_POST_FORMAT_KEY]);
     }
 }
-
-/*function uciseventeen_so_before_content($stuff) {
-    return $stuff;
-}
-add_filter('siteorigin_panels_before_content', 'uciseventeen_so_before_content');
-
-function uciseventeen_so_after_content($stuff) {
-    return $stuff;
-}
-add_filter('siteorigin_panels_after_content', 'uciseventeen_so_after_content');
-
-function uciseventeen_so_before_row($stuff) {
-    return $stuff;
-}
-add_filter('siteorigin_panels_before_row', 'uciseventeen_so_before_row');
-
-function uciseventeen_so_after_row($stuff) {
-    return $stuff;
-}
-add_filter('siteorigin_panels_after_row', 'uciseventeen_so_after_row');
-
-function uciseventeen_so_row_cell_attributes($attributes, $grid) {
-
-}
-add_filter('siteorigin_panels_row_cell_attributes', 'uciseventeen_so_row_cell_attributes', 10, 2);*/
 
