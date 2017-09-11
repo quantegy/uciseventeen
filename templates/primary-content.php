@@ -6,8 +6,9 @@
  * Time: 11:25 AM
  */
 $template = get_post_meta(get_the_ID(), UCISEVENTEEN_POST_FORMAT_KEY, true);
+
 ?>
-<?php if(is_single()): ?>
+<?php if(is_page() || is_single()): ?>
 <?php get_template_part('templates/post/content', (empty($template)) ? 'column-full': $template); ?>
 <?php else: ?>
 <div>
