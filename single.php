@@ -7,6 +7,7 @@
  */
 get_header();
 ?>
+
 <?php while (have_posts()): the_post(); ?>
     <?php get_template_part('templates/post/content', get_post_format()); ?>
 
@@ -16,4 +17,5 @@ get_header();
 
     <?php wp_bootstrap_pagination(); ?>
 <?php endwhile; ?>
+
 <?php get_footer();

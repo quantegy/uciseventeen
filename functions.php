@@ -104,12 +104,12 @@ add_action('after_setup_theme', 'uciseventeen_setup');
  */
 function uciseventeen_scripts()
 {
-    wp_enqueue_style('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION);
+    wp_enqueue_style('bootstrap-uci', get_template_directory_uri() . '/assets/theme-styles/uciseventeen.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-    wp_enqueue_style('uciseventeen', get_stylesheet_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
+    wp_enqueue_style('uciseventeen', get_template_directory_uri() . '/style.css', array(), UCI_SEVENTEEN_VERSION);
     wp_enqueue_script('jquery-2.1.4', '//code.jquery.com/jquery-2.1.4.min.js', array(), UCI_SEVENTEEN_VERSION, true);
     wp_enqueue_script('bootstrap-3.3.4', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js', array(), UCI_SEVENTEEN_VERSION, true);
-    wp_enqueue_script('bootstrap-uci', get_stylesheet_directory_uri() . '/assets/theme-styles/Bootstrap3-UCI-theme/js/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
+    wp_enqueue_script('bootstrap-uci', get_template_directory_uri() . '/assets/theme-styles/Bootstrap3-UCI-theme/js/bootstrap-uci-extensions.js', array(), UCI_SEVENTEEN_VERSION, true);
 }
 
 add_action('wp_enqueue_scripts', 'uciseventeen_scripts');
@@ -183,7 +183,7 @@ function uciseventeen_wordmark($return = false)
     $html = '<a href="' . uciseventeen_home_url(true) . '">';
 
     if (empty($mediaId)) {
-        $html .= '<img src="' . get_stylesheet_directory_uri() . '/assets/images/uci-wordmark.png" alt="' . get_bloginfo('name') . '">';
+        $html .= '<img src="' . get_template_directory_uri() . '/assets/images/uci-wordmark.png" alt="' . get_bloginfo('name') . '">';
     } else {
         $html .= wp_get_attachment_image($mediaId, 'full', false, array(
             'alt' => get_bloginfo('name')
@@ -224,9 +224,9 @@ function uciseventeen_get_search_form($form)
     $type = get_theme_mod(\UCI\Wordpress\Customize\Header\Settings::SEARCH_FORM_SETTING, 'uci');
 
     if ($type === \UCI\Wordpress\Customize\Header\Settings::SEARCH_FORM_UCI) {
-        $form = template(get_stylesheet_directory() . '/templates/form/uci.php');
+	    $form = template(get_template_directory() . '/templates/form/uci.php');
     } else {
-        $form = template(get_stylesheet_directory() . '/templates/form/wp.php');
+	    $form = template(get_template_directory() . '/templates/form/wp.php');
     }
 
     return $form;
@@ -264,7 +264,7 @@ function template($file, $args = array())
  */
 function uciseventeen_breadcrumb($echo = true)
 {
-    $template = template(get_stylesheet_directory() . '/templates/breadcrumbs.php');
+    $template = template(get_template_directory() . '/templates/breadcrumbs.php');
 
     if ($echo !== true) {
         return $template;
@@ -276,10 +276,12 @@ function uciseventeen_breadcrumb($echo = true)
 /**
  * Removes the title prefix from archive page headings
  * @param $title
- * @return null|string|void
+ * @return null|string
  */
 function uciseventeen_get_the_archive_title($title)
 {
+    $title = '';
+
     if (is_category()) {
         $title = single_cat_title('', false);
     } elseif (is_tag()) {
