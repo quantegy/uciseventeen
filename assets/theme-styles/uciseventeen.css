@@ -7386,6 +7386,14 @@ footer .container address {
 .category h2 {
   font-size: 20px !important;
 }
+.content time {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #656565;
+}
+.content .media .media-left img {
+  width: 60px;
+}
 .content .portrait-header {
   width: 50%;
   float: left;
