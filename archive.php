@@ -10,7 +10,7 @@ get_header(); ?>
     <div class="container category">
 		<?php if ( have_posts() ): $i = 1; ?>
             <div class="row">
-			<?php the_archive_title( '<h1>', '</h1>' ); ?>
+			<?php the_archive_title( '<div class="col-xs-12"><h1>', '</h1></div>' ); ?>
 			<?php //the_archive_description('<p>', '</p>'); ?>
 			<?php while ( have_posts() ): the_post(); ?>
 				<?php get_template_part( 'templates/archive/content', get_post_format() ); ?>
