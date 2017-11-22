@@ -14,9 +14,12 @@
         <?php if (is_category() || is_single()): ?>
             <li>
             <?php
-            $category = get_the_category();
-            $category_title = $category[0]->cat_name;
-            $category_link = get_category_link($category[0]->cat_ID);
+            $category = get_queried_object();
+            //print '<pre>';
+            //var_dump($category);
+            //print '</pre>';
+            $category_title = $category->cat_name;
+            $category_link = get_category_link($category->term_id);
             ?>
             <?php if (is_category()): ?>
                 <?php echo $category_title; ?>

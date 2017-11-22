@@ -8,8 +8,13 @@
 ?>
 <div class="col-md-4">
 	<?php if(has_post_thumbnail()): ?>
+    <a href="<?php the_permalink(); ?>">
 		<?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
+    </a>
 	<?php endif; ?>
-	<?php the_title('<h2>', '</h2>'); ?>
+    <a href="<?php the_permalink(); ?>">
+	    <?php the_title('<h2>', '</h2>'); ?>
+    </a>
 	<?php the_date('l, F jS, Y', '<div class="post-meta">', '</div>'); ?>
+    <?php the_excerpt(); ?>
 </div>

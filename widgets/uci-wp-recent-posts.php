@@ -24,7 +24,7 @@ class UCI_Recent_Posts_Widget extends WP_Widget_Recent_Posts {
                 <ul class="list-group">
                     <?php while($r->have_posts()): $r->the_post(); ?>
                     <li class="list-group-item">
-                        <?php the_time('F d'); ?> &hellip; <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
+                        <?php the_time('F d'); ?> <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
                     </li>
                     <?php endwhile; ?>
                 </ul>

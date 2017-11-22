@@ -358,7 +358,7 @@ function uciseventeen_get_the_excerpt($output)
     }
 
     if (!is_single() && !is_page()) {
-        $html .= ' <a href="' . get_the_permalink() . '">Read more</a>';
+        //$html .= ' <a href="' . get_the_permalink() . '">Read more</a>';
     }
 
     return $html;
