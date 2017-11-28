@@ -15,6 +15,6 @@
     <a href="<?php the_permalink(); ?>">
 	    <?php the_title('<h2>', '</h2>'); ?>
     </a>
-	<?php the_date('l, F jS, Y', '<div class="post-meta">', '</div>'); ?>
+	<?php the_date('F j, Y', '<div class="post-meta">', '</div>'); ?>
     <?php the_excerpt(); ?>
 </div>
