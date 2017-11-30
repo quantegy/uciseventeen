@@ -8,9 +8,11 @@
 ?>
 <div class="col-md-4">
 	<?php if(has_post_thumbnail()): ?>
-	<?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
+    <a href="<?php the_permalink(); ?>">
+	    <?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
+    </a>
 	<?php endif; ?>
-	<?php the_date('l, F jS, Y', '<div class="post-meta">', '</div>'); ?>
-	<?php the_title('<h2>', '</h2>'); ?>
+	<?php the_date('F j, Y', '<div class="post-meta">', '</div>'); ?>
+    <a href="<?php the_permalink(); ?>"><?php the_title('<h2>', '</h2>'); ?></a>
 	<p><?php the_excerpt(); ?></p>
 </div>

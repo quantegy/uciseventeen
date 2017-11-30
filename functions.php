@@ -838,3 +838,8 @@ function uciseventeen_save_post_format($postId) {
     }
 }
 
+add_filter('oembed_dataparse', 'uciseventeen_oembed_dataparse', 10, 3);
+function uciseventeen_oembed_dataparse($html, $data, $url) {
+    $data->thumbnail_width = "100%";
+    return $html;
+}
