@@ -5,7 +5,8 @@
  * Date: 4/13/17
  * Time: 12:30 PM
  */
-get_header(); ?>
+get_header();
+?>
 
     <div class="container category">
 		<?php if ( have_posts() ): $i = 1; ?>

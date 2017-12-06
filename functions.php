@@ -17,6 +17,8 @@ ini_set('display_errors', false);
 
 @define('UCISEVENTEEN_POST_FORMAT_KEY', 'uci_post_format');
 
+@define('UCISEVENTEEN_BREADCRUMB_CAT', 'uci_breadcrumb_cat');
+
 require_once 'vendor/autoload.php';
 
 /**
@@ -720,6 +722,31 @@ function uciseventeen_page_excerpts() {
 }
 add_action('init', 'uciseventeen_page_excerpts');
 
+function uciseventeen_session_init() {
+    if(!session_id()) {
+        session_start();
+    }
+}
+add_action('init', 'uciseventeen_session_init');
+
+function test_wp_loaded() {
+    //echo "WP loaded";
+}
+add_action('wp_loaded', 'test_wp_loaded');
+
+add_action('wp', 'uciseventeen_blah');
+function uciseventeen_blah($post) {
+    global $wp_query;
+
+    if(is_category()) {
+        $_SESSION[UCISEVENTEEN_BREADCRUMB_CAT] = $wp_query->get_queried_object();
+    }
+
+    if(is_home() || is_front_page()) {
+        unset($_SESSION[UCISEVENTEEN_BREADCRUMB_CAT]);
+    }
+}
+
 /**
  * add metabox area in admin for adding a jumbotron image
  */
@@ -838,7 +865,7 @@ function uciseventeen_save_post_format($postId) {
     }
 }
 
-add_filter('oembed_dataparse', 'uciseventeen_oembed_dataparse', 10, 3);
+//add_filter('oembed_dataparse', 'uciseventeen_oembed_dataparse', 10, 3);
 function uciseventeen_oembed_dataparse($html, $data, $url) {
     $data->thumbnail_width = "100%";
     return $html;
