@@ -19,6 +19,8 @@ ini_set('display_errors', false);
 
 @define('UCISEVENTEEN_BREADCRUMB_CAT', 'uci_breadcrumb_cat');
 
+@define('UCISEVENTEEN_FEATURED_VIDEO_KEY', 'featured_video');
+
 require_once 'vendor/autoload.php';
 
 /**
@@ -754,6 +756,65 @@ function uciseventeen_blah($post) {
 function uciseventeen_jumbotron_metabox() {
     add_meta_box('jumbotron-image', __('Jumbotron image', 'uciseventeen'), 'uciseventeen_jumbotron_metabox_content', array('post', 'page'), 'normal');
 }
+
+/**
+ * metabox for adding a featured video to story
+ */
+add_action('add_meta_boxes', 'uciseventeen_featured_video');
+function uciseventeen_featured_video() {
+    add_meta_box('featured-video', __('Featured video', 'uciseventeen'), 'uciseventeen_featured_video_metabox_content', array('post'), 'normal');
+}
+
+function uciseventeen_featured_video_metabox_content() {
+	/**
+	 * @var string URL
+	 */
+    $video = get_post_meta(get_the_ID(), UCISEVENTEEN_FEATURED_VIDEO_KEY, true);
+    ?>
+    <label for="featured-video-url"></label>
+    <input class="widefat" type="text" id="featured-video-url" name="<?php echo UCISEVENTEEN_FEATURED_VIDEO_KEY; ?>" value="<?php echo $video ?>" aria-describedby="featured-video-url-desc">
+    <p id="featured-video-url-desc">URL for video that will be featured for this content instance.</p>
+    <?php
+}
+
+/**
+ * save featured video URL
+ */
+add_action('save_post', 'uciseventeen_save_featured_video');
+function uciseventeen_save_featured_video($postId) {
+    if(!add_post_meta($postId, UCISEVENTEEN_FEATURED_VIDEO_KEY, trim($_POST[UCISEVENTEEN_FEATURED_VIDEO_KEY]), true)) {
+        update_post_meta($postId, UCISEVENTEEN_FEATURED_VIDEO_KEY, trim($_POST[UCISEVENTEEN_FEATURED_VIDEO_KEY]));
+    }
+}
+
+/**
+ * to check if post has featured video
+ */
+function uciseventeen_has_featured_video() {
+    global $post;
+
+    $url = get_post_meta($post->ID, UCISEVENTEEN_FEATURED_VIDEO_KEY, true);
+
+    if(!empty($url)) {
+        return true;
+    }
+
+    return false;
+}
+
+function uciseventeen_get_featured_video_url() {
+    global $post;
+
+    $meta = get_post_meta($post->ID, UCISEVENTEEN_FEATURED_VIDEO_KEY, true);
+
+    return $meta;
+}
+
+function uciseventeen_embed_html($html) {
+	return '<div class="featured-video">' . $html . '</div>';
+}
+add_filter('embed_oembed_html', 'uciseventeen_embed_html', 10, 3);
+add_filter('video_embed_html', 'uciseventeen_embed_html'); // jetpack
 
 /**
  * save jumbotron image data
