@@ -810,11 +810,23 @@ function uciseventeen_get_featured_video_url() {
     return $meta;
 }
 
-function uciseventeen_embed_html($html) {
-	return '<div class="featured-video">' . $html . '</div>';
+add_filter('embed_defaults', 'uciseventeen_embed_defaults', 10, 2);
+function uciseventeen_embed_defaults($defaults, $url) {
+    return $defaults;
 }
-add_filter('embed_oembed_html', 'uciseventeen_embed_html', 10, 3);
-add_filter('video_embed_html', 'uciseventeen_embed_html'); // jetpack
+
+add_filter('oembed_result', 'uciseventeen_oembed_result', 10, 3);
+function uciseventeen_oembed_result($html, $url, $args) {
+	/**
+	 * if it's a YouTube embed let's replace default embed URL with
+     * modest YouTube branding, no related videos, and no video info
+	 */
+    if(strstr($html, 'youtube.com/embed/')) {
+        $html = str_replace('?feature=oembed', '?rel=0&modestbranding=1&autohide=1&showinfo=0', $html);
+    }
+
+    return '<div class="featured-video">' . $html . '</div>';
+}
 
 /**
  * save jumbotron image data
