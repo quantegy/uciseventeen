@@ -8,9 +8,7 @@
 ?>
 <ol class="breadcrumb">
     <?php if (!is_home() && !is_front_page()): ?>
-        <li>
-            <a href="<?php echo get_option('home'); ?>">Home</a>
-        </li>
+        <li><a href="<?php echo get_option('home'); ?>">Home</a></li>
         <?php if (is_category() || is_single()): ?>
 		    <?php
 		    $category = $_SESSION[UCISEVENTEEN_BREADCRUMB_CAT];
@@ -46,17 +44,14 @@
             <?php endif; ?>
         <?php endif; ?>
         <?php if (is_single()): ?>
-            <li>
-                <?php the_title(); ?>
-            </li>
+            <li><?php the_title(); ?></li>
         <?php elseif (is_page()): ?>
             <li><?php the_title(); ?></li>
         <?php endif; ?>
     <?php elseif (is_tag()): ?>
         <?php single_tag_title(); ?>
     <?php elseif (is_day()): ?>
-        <li>
-          </li>
+        <li></li>
     <?php elseif (is_month()): ?>
 
     <?php elseif (is_year()): ?>
@@ -64,12 +59,8 @@
     <?php elseif (is_author()): ?>
 
     <?php elseif (isset($_GET['paged']) && !empty($_GET['paged'])): ?>
-        <li>
-            Blog Archives
-        </li>
+        <li>Blog Archives</li>
     <?php elseif (is_search()): ?>
-        <li>
-            Search results
-        </li>
+        <li>Search results</li>
     <?php endif; ?>
 </ol>
