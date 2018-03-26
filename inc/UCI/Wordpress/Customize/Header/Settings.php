@@ -13,6 +13,8 @@ class Settings extends \UCI\Wordpress\Customize\Settings {
     const SEARCH_FORM_SETTING = 'search_form';
     const SEARCH_FORM_UCI = 'uci';
     const SEARCH_FORM_WP = 'wp';
+    const SEARCH_FORM_COLLECTION_SETTING = 'search_collection';
+    const SEARCH_FORM_DEFAULT_COLLECTION = 'uci_full';
 
     public function __construct($wpCustomize)
     {
@@ -46,6 +48,8 @@ class Settings extends \UCI\Wordpress\Customize\Settings {
             'default' => self::SEARCH_FORM_UCI
         ));
 
+        $this->getWpCustomize()->add_setting(self::SEARCH_FORM_COLLECTION_SETTING, array('default' => self::SEARCH_FORM_DEFAULT_COLLECTION));
+
         $this->getWpCustomize()->add_control(new \WP_Customize_Control($this->getWpCustomize(), self::SEARCH_FORM_SETTING, array(
             'label' => __('Search Type', 'uciseventeen'),
             'section' => self::SECTION_NAME,
@@ -55,6 +59,18 @@ class Settings extends \UCI\Wordpress\Customize\Settings {
                 self::SEARCH_FORM_UCI => __('UCI', 'uciseventeen'),
                 self::SEARCH_FORM_WP => __('Wordpress', 'uciseventeen')
             )
+        )));
+
+        $this->getWpCustomize()->add_control(new \WP_Customize_Control($this->getWpCustomize(), self::SEARCH_FORM_COLLECTION_SETTING, array(
+			'label' => __('Assign a serach collection', 'uciseventeen'),
+	        'description' => __('Only relevant to using the UCI search form.', 'uciseventeen'),
+	        'section' => self::SECTION_NAME,
+	        'settings' => self::SEARCH_FORM_COLLECTION_SETTING,
+	        'type' => 'select',
+	        'choices' => array(
+	        	self::SEARCH_FORM_DEFAULT_COLLECTION => __('UCI Full', 'uciseventeen'),
+		        'news_uci_edu' => __('UCI News', 'uciseventeen')
+	        )
         )));
     }
 }
