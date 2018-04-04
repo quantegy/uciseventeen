@@ -23,7 +23,7 @@
 
     <?php wp_head(); ?>
 </head>
-<body>
+<body class="<?php uciseventeen_styling_namespace(); ?>">
 
 <!-- skip to main nav -->
 <nav aria-label="Skip to" id="skip-to">
