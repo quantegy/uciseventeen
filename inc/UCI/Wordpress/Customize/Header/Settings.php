@@ -62,15 +62,11 @@ class Settings extends \UCI\Wordpress\Customize\Settings {
         )));
 
         $this->getWpCustomize()->add_control(new \WP_Customize_Control($this->getWpCustomize(), self::SEARCH_FORM_COLLECTION_SETTING, array(
-			'label' => __('Assign a serach collection', 'uciseventeen'),
+			'label' => __('Assign a search collection', 'uciseventeen'),
 	        'description' => __('Only relevant to using the UCI search form.', 'uciseventeen'),
 	        'section' => self::SECTION_NAME,
 	        'settings' => self::SEARCH_FORM_COLLECTION_SETTING,
-	        'type' => 'select',
-	        'choices' => array(
-	        	self::SEARCH_FORM_DEFAULT_COLLECTION => __('UCI Full', 'uciseventeen'),
-		        'news_uci_edu' => __('UCI News', 'uciseventeen')
-	        )
+	        'type' => 'text'
         )));
     }
 }

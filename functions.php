@@ -943,3 +943,31 @@ function uciseventeen_oembed_dataparse($html, $data, $url) {
     $data->thumbnail_width = "100%";
     return $html;
 }
+
+/**
+ * namespaces each post type's styling namespace for main content wrapper
+ */
+function uciseventeen_styling_namespace() {
+    $nsAry = [];
+    $ns = '';
+
+    if(is_page()) {
+        $nsAry[] = 'page';
+    }
+
+    if(is_front_page() || is_home()) {
+        $nsAry[] = 'homepage';
+    }
+
+    if(is_single()) {
+        $nsAry[] = 'post';
+    }
+
+    if(is_category() || is_archive()) {
+        $nsAry[] = 'category';
+    }
+
+    $ns = implode(' ', $nsAry);
+
+    echo $ns;
+}
