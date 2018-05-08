@@ -971,3 +971,21 @@ function uciseventeen_styling_namespace() {
 
     echo $ns;
 }
+
+add_filter('wp_title', 'uciseventeen_wp_title', 10, 2);
+function uciseventeen_wp_title($title, $sep) {
+	global $post, $page, $paged;
+
+	if(is_single() || is_page() && (!is_home() && !is_front_page())) {
+		$_title[] = get_the_title($post);
+	}
+
+	if(is_category()) {
+		$_title[] = get_the_archive_title();
+	}
+
+	$_title[] = get_bloginfo('name');
+	$_title[] = 'UCI';
+
+	return implode($sep, $_title);
+}
