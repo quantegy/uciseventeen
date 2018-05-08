@@ -21,6 +21,8 @@
     <link rel="icon" type="image/x-icon" href="//web.communications.uci.edu/assets/2015/img/favicon.ico">
     <link rel="apple-touch-icon" href="//web.communications.uci.edu/assets/2015/img/webclip-icon.png">
 
+    <title><?php wp_title(' | ', true, 'right'); ?></title>
+
     <?php wp_head(); ?>
 </head>
 <body class="<?php uciseventeen_styling_namespace(); ?>">
@@ -85,4 +87,4 @@
     </div>
 </nav>
 
-<main id="content">
+<main id="content-main">
