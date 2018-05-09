@@ -190,7 +190,11 @@ if ( ! class_exists( 'WP_UCI_Bootstrap_Navwalker' ) ) {
                     if ( false !== $pos ) :
                         $item_output .= '<a' . $attributes . '><span class="glyphicon ' . esc_attr( $item->attr_title ) . '" aria-hidden="true"></span>&nbsp;';
                     else :
-                        $item_output .= '<a' . $attributes . '><i class="fa ' . esc_attr( $item->attr_title ) . '" aria-hidden="true"></i>&nbsp;';
+                        //$item_output .= '<a' . $attributes . '><i class="fa ' . esc_attr( $item->attr_title ) . '" aria-hidden="true"></i>&nbsp;';
+	                    /**
+	                     * we are no longer supporting title attributes in anchor elements
+	                     */
+	                    $item_output .= '';
                     endif;
                 else :
                     if(!$args->has_children) {
