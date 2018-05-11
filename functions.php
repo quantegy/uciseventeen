@@ -888,24 +888,14 @@ function uciseventeen_add_formats_metabox() {
 function uciseventeen_get_post_formats() {
     return array(
         array(
-            'value' => 'column-full',
-            'label' => 'Column Full',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Full.png'
-        ),
-        array(
-            'value' => 'column-wrap',
-            'label' => 'Column Wrap',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Wrap.png'
+            'value' => 'column-auto',
+            'label' => 'Column Auto',
+            'icon' => get_template_directory_uri() . '/assets/format-icons/Column-Auto.png'
         ),
         array(
             'value' => 'row-full',
             'label' => 'Row Full',
             'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Full.png'
-        ),
-        array(
-            'value' => 'row-wrap',
-            'label' => 'Row Wrap',
-            'icon' => get_template_directory_uri() . '/assets/format-icons/Row-Wrap.png'
         )
     );
 }
