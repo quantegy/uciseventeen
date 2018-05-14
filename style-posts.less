@@ -1,0 +1,36 @@
+.post {
+	.portrait-header {
+		> img {
+			width: 100%;
+			&:last-child {
+				margin-bottom: 15px;
+			}
+		}
+	}
+	
+	.caption {
+		font-size: 13px;
+		background-color: #f8f8f8;
+		padding: 8px 10px;
+	}
+	
+	.article-column-wrap {
+		.portrait-header {
+			width: 50%;
+			float: left;
+			margin-bottom: 0;
+			margin-right: 20px;
+		}
+	}
+	
+	.article-row-full {
+		+ aside {
+			.widget {
+				.make-xs-column(12);
+				.make-sm-column(6);
+				.make-md-column(3);
+				margin-bottom: 15px;
+			}
+		}
+	}
+}
