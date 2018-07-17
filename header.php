@@ -77,14 +77,14 @@
 
 <hr>
 
-<nav aria-label="breadcrumbs" id="breadcrumbs">
+<!--<nav aria-label="breadcrumbs" id="breadcrumbs">
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <?php uciseventeen_breadcrumb(); ?>
+                <?php //uciseventeen_breadcrumb(); ?>
             </div>
         </div>
     </div>
-</nav>
+</nav> -->
 
 <main id="content-main">
