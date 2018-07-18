@@ -6,13 +6,14 @@
  * Time: 9:55 AM
  */
 ?>
-<div class="col-md-4">
+<div class="col-md-12">
 	<?php if(has_post_thumbnail()): ?>
     <a href="<?php the_permalink(); ?>">
 	    <?php the_post_thumbnail('large', array('class' => 'img-responsive')); ?>
     </a>
 	<?php endif; ?>
-	<?php the_date('F j, Y', '<div class="post-meta">', '</div>'); ?>
-    <a href="<?php the_permalink(); ?>"><?php the_title('<h2>', '</h2>'); ?></a>
+	<?php //the_date('F j, Y', '<div class="post-meta">', '</div>'); ?>
+    <!-- <a href="<?php //the_permalink(); ?>"><?php //the_title('<h2>', '</h2>'); ?></a> -->
 	<p><?php the_excerpt(); ?></p>
+    <?php the_content(); ?>
 </div>
