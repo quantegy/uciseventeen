@@ -1028,5 +1028,4 @@ function uciseventeen_button_shortcode( $atts, $content = NULL ) {
 
 	return '<a href="' . $link . '" class="' . $class . '">' . $content . '</a>';
 }
-
 add_shortcode( 'button', 'uciseventeen_button_shortcode' );
