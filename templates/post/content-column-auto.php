@@ -13,14 +13,14 @@
     <div class="row">
         <div class="col-md-8 clearfix <?php echo $article_class; ?>">
             <div class="portrait-header">
-	            <?php if(has_post_thumbnail() && !uciseventeen_has_featured_video()): ?>
+	            <?php if(has_post_thumbnail() && !uciseventeen_has_featured_video()): // check for thumb or video ?>
 	            <?php the_post_thumbnail('medium_large'); ?>
 				<?php if (get_the_post_thumbnail_caption() != ''): ?>
 						<div class="caption"><?php the_post_thumbnail_caption(); ?></div>
 				<?php endif; ?>
 	            <?php elseif(has_post_thumbnail() && uciseventeen_has_featured_video()): ?>
 	                <?php echo wp_oembed_get(uciseventeen_get_featured_video_url()); ?>
-	            <?php endif; ?>
+	            <?php endif; // end thumb/video check ?>
             </div>
             <h1 class="page-heading"><?php the_title(); ?></h1>
             <?php the_date(); ?>
